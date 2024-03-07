@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres # or your postgres password
+    ports:
+      - "5432:5432"
+
+  payment:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - postgres
+    environment:
+      - postgres_password=postgres # or your postgres password
+      - postgres_port=5432
+
+      # All this variables by default are "postgres", you can change it all to your own by postgres environment section
+      - postgres_username=postgres
+      - postgres_hostname=postgres
+      - postgres_name=postgres
